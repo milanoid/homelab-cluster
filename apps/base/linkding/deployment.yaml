@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -19,8 +20,9 @@ spec:
             - containerPort: 9090
           volumeMounts:
             - mountPath: /app/data
-            name: linkding-data
+              name: linkding-data
       volumes:
         - name: linkding-data
           persistentVolumeClaim:
-            claimName: linking-data-pvc
+            claimName: linding-data-pvc
+
