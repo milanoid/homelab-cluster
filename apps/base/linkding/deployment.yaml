@@ -12,10 +12,6 @@ spec:
     metadata:
       labels:
         app: linkding
-    securityContext:
-      fsGrop: 33  # www-data group ID
-      runAsUser: 33  # www-data user ID
-      runAsGroup: 33  # www-data group ID
     spec:
       containers:
         - name: linkding
@@ -27,7 +23,7 @@ spec:
               name: linkding-data
           securityContext:
             allowPrivilegesEscalation: false
-            #  runAsUser: 0
+              runAsUser: 33  # www-data user ID of linkding
       volumes:
         - name: linkding-data
           persistentVolumeClaim:
