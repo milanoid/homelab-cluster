@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: linkding
+    securityContext:
+      fsGrop: 33  # www-data group ID
+      runAsUser: 33  # www-data user ID
+      runAsGroup: 33  # www-data group ID
     spec:
       containers:
         - name: linkding
@@ -21,8 +25,9 @@ spec:
           volumeMounts:
             - mountPath: /etc/linkding/data
               name: linkding-data
+          securityContext:
+            allowPrivilegesEscalation: false
       volumes:
         - name: linkding-data
           persistentVolumeClaim:
             claimName: linkding-data-pvc
-
