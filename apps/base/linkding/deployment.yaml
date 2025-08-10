@@ -27,7 +27,7 @@ spec:
               name: linkding-data
           securityContext:
             allowPrivilegesEscalation: false
-            runAsUser: 33
+            runAsUser: 1
       volumes:
         - name: linkding-data
           persistentVolumeClaim:
