@@ -20,3 +20,7 @@ The machine has installed [K3s](https://k3s.io/). It is an easy-to-use, lightwei
 ### Flux CD (GitOps)
 
 With Flux CD, managing the cluster and deploying applications is driven by git changes. No need to run `kubectl` commands manually. Push a change to the git repository and Flux will take care of the rest.
+
+### Hosted apps
+
+linkding (bookmark manager) https://server.milanoid.net/
