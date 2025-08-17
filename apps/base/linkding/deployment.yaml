@@ -20,7 +20,7 @@ spec:
             - containerPort: 9090
           envFrom:
             - secretRef:
-                name: linlding-secrets
+                name: linkding-super-user
           volumeMounts:
             - mountPath: /etc/linkding/data
               name: linkding-data
