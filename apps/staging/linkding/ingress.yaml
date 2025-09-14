@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    - host: server.milanoid.net # subdomain of my cloudflare domain
+    - host: linkding.milanoid.net # subdomain of my cloudflare domain
       http:
         paths:
           - backend:
