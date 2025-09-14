@@ -26,7 +26,7 @@ spec:
   interval: 1m0s
   retryInterval: 1m
   timeout: 5m
-  sourceref:
+  sourceRef:
     kind: GitRepository
     name: flux-system
   path: ./monitoring/configs/staging
