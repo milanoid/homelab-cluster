@@ -32,4 +32,8 @@ spec:
     # to see all possible values run `helm show values prometheus-community/kube-prometheus-stack`
     grafana:
       adminPassword: milan
-
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+      hosts:
+        - grafana.milanoid.net
