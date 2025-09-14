@@ -35,5 +35,5 @@ spec:
       ingress:
         enabled: true
         ingressClassName: traefik
-      hosts:
-        - grafana.milanoid.net
+        hosts:
+          - grafana.milanoid.net
