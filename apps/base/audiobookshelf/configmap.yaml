@@ -4,6 +4,6 @@ metadata:
   name: audiobookshelf-configmap
   namespace: audiobookshelf
 data:
-  PORT: 9005
+  PORT: "9005"
   LOG_LEVEL: "debug"
 
