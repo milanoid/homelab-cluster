@@ -17,7 +17,10 @@ spec:
         - name: audiobookshelf
           image: ghcr.io/advplyr/audiobookshelf:2.29.0
           ports:
-            - containerPort: 3005
+            - containerPort: PORT
+          envFrom:
+            - configMapRef:
+              name: audiobookshelf-configmap:www-data
           #envFrom:
           #  - secretRef:
           #      name: linkding-super-user
