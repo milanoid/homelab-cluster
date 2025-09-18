@@ -6,4 +6,6 @@ metadata:
   namespace: audiobookshelf
 data:
   PORT: "9005"
-  LOG_LEVEL: "debug"
+  TZ: "Europe/Prague"
+  CONFIG_PATH: "/audiobookshelf/config"
+  METADATA_PATH: "/audiobookshelf/metadata"
