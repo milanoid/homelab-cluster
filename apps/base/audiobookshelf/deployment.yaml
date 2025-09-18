@@ -27,6 +27,8 @@ spec:
               name: audiobookshelf-config
             - mountPath: /audibookshelf/audiobooks
               name: audiobookshelf-audiobooks
+            - mountPath: /audibookshelf/metadata
+              name: audiobookshelf-metadata
           #securityContext:
           #  allowPrivilegesEscalation: false
           #  runAsUser: 33  # www-data user ID of linkding
@@ -37,3 +39,6 @@ spec:
         - name: audiobookshelf-audiobooks
           persistentVolumeClaim:
             claimName: audiobooks-pvc
+        - name: audiobookshelf-metadata
+          persistentVolumeClaim:
+            claimName: metadata-pvc
