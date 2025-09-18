@@ -22,13 +22,23 @@ spec:
           #envFrom:
           #  - secretRef:
           #      name: linkding-super-user
-          #volumeMounts:
-          #  - mountPath: /etc/linkding/data
-          #    name: linkding-data
+          volumeMounts:
+            - mountPath: /config
+              name: audiobookshelf-config
+            - mountPath: /audiobooks
+              name: audiobookshelf-audiobooks
+            - mountPath: /metadata
+              name: audiobookshelf-metadata
           #securityContext:
           #  allowPrivilegesEscalation: false
           #  runAsUser: 33  # www-data user ID of linkding
-      #volumes:
-      #  - name: linkding-data
-      #    persistentVolumeClaim:
-      #      claimName: linkding-data-pvc
+      volumes:
+        - name: audiobookshelf-config
+          persistentVolumeClaim:
+            claimName: config-pvc
+        - name: audiobookshelf-audiobooks
+          persistentVolumeClaim:
+            claimName: audiobooks-pvc
+        - name: audiobookshelf-metadata
+          persistentVolumeClaim:
+            claimName: metadata-pvc

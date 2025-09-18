@@ -6,4 +6,4 @@ metadata:
   namespace: audiobookshelf
 data:
   PORT: "9005"
-  LOG_LEVEL: "debug"
+  TZ: "Europe/Prague"
