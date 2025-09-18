@@ -23,11 +23,18 @@ spec:
           #  - secretRef:
           #      name: linkding-super-user
           volumeMounts:
+            - mountPath: /audibookshelf/config
+              name: audiobookshelf-config
+          volumeMounts:
             - mountPath: /audibookshelf/audiobooks
               name: audiobookshelf-audiobooks
           #securityContext:
           #  allowPrivilegesEscalation: false
           #  runAsUser: 33  # www-data user ID of linkding
+      volumes:
+        - name: audiobookshelf-config
+          persistentVolumeClaim:
+            claimName: config-pvc
       volumes:
         - name: audiobookshelf-audiobooks
           persistentVolumeClaim:
