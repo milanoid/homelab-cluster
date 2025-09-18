@@ -25,7 +25,6 @@ spec:
           volumeMounts:
             - mountPath: /audibookshelf/config
               name: audiobookshelf-config
-          volumeMounts:
             - mountPath: /audibookshelf/audiobooks
               name: audiobookshelf-audiobooks
           #securityContext:
@@ -35,7 +34,6 @@ spec:
         - name: audiobookshelf-config
           persistentVolumeClaim:
             claimName: config-pvc
-      volumes:
         - name: audiobookshelf-audiobooks
           persistentVolumeClaim:
             claimName: audiobooks-pvc
