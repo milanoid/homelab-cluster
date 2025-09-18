@@ -7,5 +7,5 @@ metadata:
 data:
   PORT: "9005"
   TZ: "Europe/Prague"
-  #CONFIG_PATH: "/audiobookshelf/config"
-  #METADATA_PATH: "/audiobookshelf/metadata"
+  CONFIG_PATH: /audibookshelf/config
+
