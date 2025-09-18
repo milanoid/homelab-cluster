@@ -7,8 +7,8 @@ metadata:
 data:
   PORT: "9005"
   TZ: "Europe/Prague"
-  #CONFIG_PATH: /audiobookshelf/config
-  #METADATA_PATH: /audibookshelf/metadata
+  CONFIG_PATH: /config
+  METADATA_PATH: /metadata
   #BACKUP_PATH: BACKUP_PATH/backups
   #AUDIOBOOKS_PATH: /audiobookshelf/audiobooks
   #PODCASTS_PATH: /audiobookshelf/podcasts
