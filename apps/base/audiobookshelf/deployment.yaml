@@ -25,9 +25,9 @@ spec:
           volumeMounts:
             - mountPath: CONFIG_PATH
               name: audiobookshelf-config
-            - mountPath: /audibookshelf/audiobooks
+            - mountPath: AUDIOBOOKS_PATH
               name: audiobookshelf-audiobooks
-            - mountPath: /audibookshelf/metadata
+            - mountPath: METADATA_PATH
               name: audiobookshelf-metadata
           #securityContext:
           #  allowPrivilegesEscalation: false
