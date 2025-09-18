@@ -23,11 +23,11 @@ spec:
           #  - secretRef:
           #      name: linkding-super-user
           volumeMounts:
-            - mountPath: CONFIG_PATH
+            - mountPath: /config
               name: audiobookshelf-config
-            - mountPath: AUDIOBOOKS_PATH
+            - mountPath: /audiobooks
               name: audiobookshelf-audiobooks
-            - mountPath: METADATA_PATH
+            - mountPath: /metadata
               name: audiobookshelf-metadata
           #securityContext:
           #  allowPrivilegesEscalation: false
