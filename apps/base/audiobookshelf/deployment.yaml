@@ -35,6 +35,7 @@ spec:
           #securityContext:
           #  allowPrivilegesEscalation: false
           #  runAsUser: 33  # www-data user ID of linkding
+      restartPolicy: Always
       volumes:
         - name: audiobookshelf-config
           persistentVolumeClaim:
