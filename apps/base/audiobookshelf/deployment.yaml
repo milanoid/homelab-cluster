@@ -29,9 +29,9 @@ spec:
               name: audiobookshelf-audiobooks
             - mountPath: /metadata
               name: audiobookshelf-metadata
-          securityContext:
-            allowPrivilegesEscalation: false
-            runAsUser: 1000  # user `node`
+          #securityContext:
+          #  allowPrivilegesEscalation: false
+          #  runAsUser: 1000  # user `node`
       restartPolicy: Always
       volumes:
         - name: audiobookshelf-config
