@@ -5,6 +5,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
+    # to be accessed from LAN/VPN only - DNS in CF pointing to local IP
     - host: linkding.milanoid.net # subdomain of my cloudflare domain
       http:
         paths:
