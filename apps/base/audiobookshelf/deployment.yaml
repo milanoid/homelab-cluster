@@ -19,6 +19,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: audiobookshelf-configmap
+          ports:
+            - containerPort: 3005
+              protocol: TCP
           #envFrom:
           #  - secretRef:
           #      name: linkding-super-user
