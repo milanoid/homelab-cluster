@@ -1,6 +1,6 @@
 # HomeLab
 
-This repo holds code for my HomeLab. I am in the process of learning Kubernetes, GitOps, and Linux as I transition to DevOps.
+This repo holds code for my HomeLab. I am in the process of learning Kubernetes, GitOps, and Linux as I transition to DevOps and there is no better way than to have a hands on experience. 
 
 ### Hardware
 
@@ -23,4 +23,6 @@ With Flux CD, managing the cluster and deploying applications is driven by git c
 
 ### Hosted apps
 
-linkding (bookmark manager) https://server.milanoid.net/
+- Linkding (bookmark manager) https://lkd.milanoid.net/
+- Audiobookshelf https://audiobooks.milanoid.net/
+- ... more will come
