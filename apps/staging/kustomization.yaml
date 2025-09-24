@@ -1,5 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - audiobookshelf # comment out to remove from the cluster
-  - linkding       # comment out to remove from the cluster
+  - audiobookshelf # Comment out this line to exclude from deployment
+  - linkding       # Comment out this line to exclude from deployment
