@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - audiobookshelf # Comment out this line to exclude from deployment
   - linkding       # Comment out this line to exclude from deployment
+  - webhosting     # Comment out this line to exclude from deployment
+
