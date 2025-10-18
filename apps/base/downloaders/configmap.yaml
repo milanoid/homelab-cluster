@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: downloaders-configmap
+  namespace: downloaders
+data:
+  PUID: "1000"
+  PGID: "1000"
+  UMASK: "002"
+  TZ: "Europe/Prague"

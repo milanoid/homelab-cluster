@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: downloaders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: downloaders
+  template:
+    metadata:
+      labels:
+        app: downloaders
+    spec:
+      containers:
+        - name: radarr
+          image: ghcr.io/hotio/radarr:release-2e2cc9b
+          envFrom:
+            - configMapRef:
+                name: downloaders-configmap
+          ports:
+            - containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: downloaders-config
+            - mountPath: /data
+              name: downloaders-date
+      restartPolicy: Always
+      volumes:
+        - name: downloaders-config
+          persistentVolumeClaim:
+            claimName: config-pvc
+        - name: downloaders-data
+          persistentVolumeClaim:
+            claimName: data-pvc
