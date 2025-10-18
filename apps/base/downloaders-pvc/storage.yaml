@@ -1,0 +1,17 @@
+---
+# This is PVC to be shared by all apps in the `downloaders` namespace.
+# Namely: `prowlarr`, `radarr` and `torrent-client`
+# Due to 1:1 relationship between PV and PVC cannot have multiple PVC bound to one PV.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: synology-nfs-pvc
+  namespace: downloaders
+spec:
+  storageClassName: ""
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: synology-nfs-pv

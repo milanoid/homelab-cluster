@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: downloaders-configmap
+  name: radarr-configmap
   namespace: downloaders
 data:
-  PUID: "1000"
-  PGID: "1000"
+  PUID: "1024"    # NAS user `admin`
+  PGID: "101"     # NAS group `administrators`
   UMASK: "002"
   TZ: "Europe/Prague"
