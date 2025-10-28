@@ -3,4 +3,3 @@ kind: Kustomization
 namespace: downloaders
 resources:
   - ../../base/torrent-client
-  - ../../../persistent-volumes/staging
