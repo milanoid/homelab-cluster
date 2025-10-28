@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: torrent-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: torrent-client
+  template:
+    metadata:
+      labels:
+        app: torrent-client
+    spec:
+      containers:
+        - name: qbittorrent
+          image: linuxserver/qbittorrent:5.1.2
+          envFrom:
+            - configMapRef:
+                name: qbittorrent-configmap
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /downloads
+              name: qbittorrent
+              subPath: downloads
+            - mountPath: /config
+              name: qbittorrent
+              subPath: qbittorrent/config
+ 
+      restartPolicy: Always
+      volumes:
+        - name: qbittorrent
+          persistentVolumeClaim:
+            claimName: synology-nfs-pvc

@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: ghcr.io/hotio/radarr:release-2e2cc9b
+          envFrom:
+            - configMapRef:
+                name: radarr-configmap
+          ports:
+            - containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: radarr
+              subPath: radarr/config
+            - mountPath: /downloads
+              subPath: downloads
+              name: radarr  # to see downloads by torrent client
+
+      restartPolicy: Always
+      volumes:
+        - name: radarr
+          persistentVolumeClaim:
+            claimName: synology-nfs-pvc

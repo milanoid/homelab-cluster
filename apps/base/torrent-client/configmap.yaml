@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qbittorrent-configmap
+  namespace: downloaders
+data:
+  PUID: "1024"    # NAS user `admin`
+  PGID: "101"     # NAS group `administrators`
+  TZ: "Europe/Prague"
+  WEBUI_PORT: "8080"
+  TORRENTING_PORT: "6881"
