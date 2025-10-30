@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+    spec:
+      containers:
+        - name: bazarr
+          image: linuxserver/bazarr:1.5.4-development
+          envFrom:
+            - configMapRef:
+                name: bazarr-configmap
+          ports:
+            - containerPort: 6767
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: bazarr-config
+              subPath: bazarr/config
+            - mountPath: /movies
+              subPath: downloads
+              name: movies-downloads
+
+      restartPolicy: Always
+      volumes:
+        - name: bazarr-config
+          persistentVolumeClaim:
+            claimName: bazarr-config-pvc
+        - name: movies-downloads
+          persistentVolumeClaim:
+            claimName: synology-nfs-pvc

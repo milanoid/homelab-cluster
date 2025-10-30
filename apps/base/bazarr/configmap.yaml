@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bazarr-configmap
+  namespace: downloaders
+data:
+  PUID: "1024"    # NAS user `admin`
+  PGID: "101"     # NAS group `administrators`
+  UMASK: "002"
+  TZ: "Europe/Prague"
