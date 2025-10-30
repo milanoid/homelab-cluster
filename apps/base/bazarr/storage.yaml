@@ -3,7 +3,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: bazarr-config-pvc
-  namespace: bazarr
+  namespace: downloaders
 spec:
   accessModes:
     - ReadWriteOnce
