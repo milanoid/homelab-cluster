@@ -8,4 +8,4 @@ resources:
   - radarr
   - prowlarr
   - torrent-client
-
+  - bazarr
