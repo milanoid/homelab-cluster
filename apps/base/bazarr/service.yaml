@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr
+  namespace: downloaders
+spec:
+  ports:
+    - port: 6767
+  selector:
+    app: bazarr
+  type: ClusterIP
