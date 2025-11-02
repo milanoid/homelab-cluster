@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: ghcr.io/hotio/sonarr:release-e232bdd
+          envFrom:
+            - configMapRef:
+                name: sonarr-configmap
+          ports:
+            - containerPort: 8989
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: sonarr-config
+              subPath: sonarr/config
+            - mountPath: /downloads
+              subPath: series
+              name: sonarr  # to see downloads by torrent client
+
+      restartPolicy: Always
+      volumes:
+        - name: sonarr
+          persistentVolumeClaim:
+            claimName: synology-nfs-pvc
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-config-pvc
