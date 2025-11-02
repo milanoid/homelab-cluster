@@ -27,7 +27,7 @@ spec:
               name: sonarr
               subPath: sonarr/config
             - mountPath: /downloads
-              subPath: downloads
+              subPath: series
               name: sonarr  # to see downloads by torrent client
 
       restartPolicy: Always
