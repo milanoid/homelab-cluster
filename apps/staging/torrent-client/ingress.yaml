@@ -11,7 +11,7 @@ spec:
         paths:
           - backend:
               service:
-                name: torrent-client
+                name: torrent
                 port:
                   number: 8080
             path: /
