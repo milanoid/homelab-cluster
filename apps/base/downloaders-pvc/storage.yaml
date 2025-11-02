@@ -15,15 +15,3 @@ spec:
     requests:
       storage: 500Gi
   volumeName: synology-nfs-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sonarr-config-pvc
-  namespace: downloaders
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
