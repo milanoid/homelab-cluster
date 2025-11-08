@@ -24,7 +24,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - mountPath: /config
-              name: radarr
+              name: radarr-config
               subPath: radarr/config
             - mountPath: /downloads
               subPath: downloads
@@ -35,3 +35,6 @@ spec:
         - name: radarr
           persistentVolumeClaim:
             claimName: synology-nfs-pvc
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config-pvc
