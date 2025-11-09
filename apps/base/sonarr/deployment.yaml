@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: sonarr
-          image: ghcr.io/hotio/sonarr:release-e232bdd
+          image: ghcr.io/hotio/sonarr:release-4.0.16.2944
           envFrom:
             - configMapRef:
                 name: sonarr-configmap
@@ -26,13 +26,12 @@ spec:
             - mountPath: /config
               name: sonarr-config
               subPath: sonarr/config
-            - mountPath: /downloads
-              subPath: series
-              name: sonarr  # to see downloads by torrent client
+            - mountPath: /data
+              name: sonarr-data
 
       restartPolicy: Always
       volumes:
-        - name: sonarr
+        - name: sonarr-data
           persistentVolumeClaim:
             claimName: synology-nfs-pvc
         - name: sonarr-config

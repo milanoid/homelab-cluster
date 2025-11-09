@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: radarr
-          image: ghcr.io/hotio/radarr:release-2e2cc9b
+          image: ghcr.io/hotio/radarr:release-5.28.0.10274
           envFrom:
             - configMapRef:
                 name: radarr-configmap
@@ -26,13 +26,12 @@ spec:
             - mountPath: /config
               name: radarr-config
               subPath: radarr/config
-            - mountPath: /downloads
-              subPath: downloads
-              name: radarr  # to see downloads by torrent client
+            - mountPath: /data
+              name: radarr-data
 
       restartPolicy: Always
       volumes:
-        - name: radarr
+        - name: radarr-data
           persistentVolumeClaim:
             claimName: synology-nfs-pvc
         - name: radarr-config
