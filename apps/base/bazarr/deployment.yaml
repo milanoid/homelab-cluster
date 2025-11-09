@@ -29,9 +29,6 @@ spec:
             - mountPath: /movies
               subPath: downloads
               name: movies-downloads
-            - mountPath: /series
-              subPath: series
-              name: series-downloads
 
       restartPolicy: Always
       volumes:
@@ -39,8 +36,5 @@ spec:
           persistentVolumeClaim:
             claimName: bazarr-config-pvc
         - name: movies-downloads
-          persistentVolumeClaim:
-            claimName: synology-nfs-pvc
-        - name: series-downloads
           persistentVolumeClaim:
             claimName: synology-nfs-pvc
