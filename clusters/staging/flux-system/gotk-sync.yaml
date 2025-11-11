@@ -8,7 +8,7 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: consolidate-pvcs
+    branch: main
   secretRef:
     name: flux-system
   url: ssh://git@github.com/milanoid/homelab-cluster
