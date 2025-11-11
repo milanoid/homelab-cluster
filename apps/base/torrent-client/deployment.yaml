@@ -23,9 +23,8 @@ spec:
             - containerPort: 8080
               protocol: TCP
           volumeMounts:
-            - mountPath: /downloads
+            - mountPath: /data
               name: qbittorrent
-              subPath: downloads
             - mountPath: /config
               name: qbittorrent
               subPath: qbittorrent/config
