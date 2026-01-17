@@ -18,21 +18,23 @@ spec:
           image: linuxserver/qbittorrent:5.1.4
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "100m"
-            limits:
               memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
               cpu: "500m"
           readinessProbe:
             httpGet:
+              host: localhost
               path: /
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 3
             failureThreshold: 3
           livenessProbe:
             httpGet:
+              host: localhost
               path: /
               port: 8080
             initialDelaySeconds: 30
