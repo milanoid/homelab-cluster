@@ -25,6 +25,7 @@ spec:
               cpu: "500m"
           readinessProbe:
             httpGet:
+              host: localhost
               path: /
               port: 8080
             initialDelaySeconds: 10
@@ -33,6 +34,7 @@ spec:
             failureThreshold: 3
           livenessProbe:
             httpGet:
+              host: localhost
               path: /
               port: 8080
             initialDelaySeconds: 30
