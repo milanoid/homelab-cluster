@@ -16,6 +16,13 @@ spec:
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           envFrom:
             - configMapRef:
                 name: qbittorrent-configmap
