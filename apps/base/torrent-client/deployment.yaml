@@ -13,8 +13,6 @@ spec:
       labels:
         app: torrent-client
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: hpmini01
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
