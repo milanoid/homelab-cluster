@@ -13,6 +13,8 @@ spec:
       labels:
         app: torrent-client
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: hpmini02
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
@@ -59,10 +61,13 @@ spec:
             - mountPath: /data
               name: qbittorrent
             - mountPath: /config
-              name: qbittorrent
-              subPath: qbittorrent/config
+              name: qbittorrent-config
       restartPolicy: Always
       volumes:
         - name: qbittorrent
           persistentVolumeClaim:
             claimName: synology-nfs-pvc
+        - name: qbittorrent-config
+          hostPath:
+            path: /srv/qbittorrent/config
+            type: DirectoryOrCreate
