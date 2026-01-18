@@ -53,7 +53,6 @@ spec:
             - mountPath: /config
               name: qbittorrent
               subPath: qbittorrent/config
-
       restartPolicy: Always
       volumes:
         - name: qbittorrent
