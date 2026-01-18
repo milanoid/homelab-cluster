@@ -16,6 +16,23 @@ spec:
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
+          # Health checks to auto-restart if UI hangs
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 10
           resources:
             requests:
               memory: "512Mi"
@@ -36,7 +53,6 @@ spec:
             - mountPath: /config
               name: qbittorrent
               subPath: qbittorrent/config
- 
       restartPolicy: Always
       volumes:
         - name: qbittorrent
