@@ -29,6 +29,7 @@ spec:
           ports:
             - containerPort: 8080
               protocol: TCP
+              name: web-ui
           volumeMounts:
             - mountPath: /data
               name: qbittorrent
