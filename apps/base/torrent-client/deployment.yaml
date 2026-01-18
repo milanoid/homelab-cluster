@@ -17,6 +17,14 @@ spec:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
           # Health checks to auto-restart if UI hangs
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 30
           livenessProbe:
             httpGet:
               path: /
