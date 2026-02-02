@@ -19,6 +19,9 @@ spec:
       existingSecret: "pihole-password"
       passwordKey: "password"
 
+    # Using existingClaim to preserve data from previous Helm CLI deployment
+    # The PVC "pihole" already exists on the cluster (created 34 days ago)
+    # This prevents data loss during migration from Helm CLI to Flux GitOps
     persistentVolumeClaim:
       enabled: true
       existingClaim: "pihole"
