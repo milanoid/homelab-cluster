@@ -10,3 +10,4 @@ resources:
   - torrent-client
   - bazarr
   - sonarr
+  - pihole
