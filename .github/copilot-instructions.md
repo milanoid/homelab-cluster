@@ -75,7 +75,7 @@ All apps use **Traefik** as the ingress controller:
 ### Security Context
 
 Containers should run as non-root:
-- Set `securityContext.allowPrivilegesEscalation: false`
+- Set `securityContext.allowPrivilegeEscalation: false`
 - Specify `runAsUser` with appropriate UID (e.g., `runAsUser: 33` for www-data)
 
 ## Tools & Automation

@@ -25,7 +25,7 @@ spec:
             - mountPath: /etc/linkding/data
               name: linkding-data
           securityContext:
-            allowPrivilegesEscalation: false
+            allowPrivilegeEscalation: false
             runAsUser: 33  # www-data user ID of linkding
       volumes:
         - name: linkding-data
