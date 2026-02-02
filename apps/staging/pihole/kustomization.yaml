@@ -4,4 +4,4 @@ namespace: pihole
 resources:
   - ../../base/pihole
   - pihole-secrets.yaml
-#  - cloudflare.yaml
+  - ingress.yaml
