@@ -61,3 +61,6 @@ spec:
     extraEnvVars:
       TZ: Europe/Prague
 
+    nodeSelector:
+      kubernetes.io/hostname: hpmini02
+
