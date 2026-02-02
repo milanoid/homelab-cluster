@@ -53,8 +53,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: qbittorrent-configmap
-            - secretRef:
-                name: qbittorrent-password
           ports:
             - containerPort: 8080
               protocol: TCP

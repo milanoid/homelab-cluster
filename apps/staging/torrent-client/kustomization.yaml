@@ -3,5 +3,4 @@ kind: Kustomization
 namespace: downloaders
 resources:
   - ingress.yaml
-  - qbittorrent-secrets.yaml
   - ../../base/torrent-client
