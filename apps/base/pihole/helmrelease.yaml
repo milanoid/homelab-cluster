@@ -15,16 +15,21 @@ spec:
         namespace: pihole
       interval: 12h
   values:
-    adminPassword: admin # todo - into sacrets
+    admin:
+      existingSecret: "pihole-password"
+      passwordKey: "password"
+
     persistentVolumeClaim:
       enabled: true
+      existingClaim: "pihole"
       size: 500Mi
       accessModes:
-         - ReadWriteOnce
+        - ReadWriteOnce
 
     serviceDns:
       mixedService: true
       type: LoadBalancer
+      loadBalancerIP: "192.168.1.232"
       externalTrafficPolicy: Local
 
     serviceWeb:
@@ -33,7 +38,26 @@ spec:
     ingress:
       enabled: false
 
+    doh:
+      enabled: true
+      envVars:
+        TUNNEL_DNS_UPSTREAM: "https://1.1.1.2/dns-query"
+
+    DNS1: 8.8.8.8
+    DNS2: 8.8.4.4
+
+    capabilities:
+      add:
+        - SYS_TIME
+        - SYS_NICE
+
+    podDnsConfig:
+      enabled: true
+      policy: "None"
+      nameservers:
+        - 127.0.0.1
+        - 8.8.8.8
+
     extraEnvVars:
-      TZ: America/Chicago
-      FTLCONF_dns_upstreams: "1.1.1.2" # Malware Blocking Only https://blog.cloudflare.com/introducing-1-1-1-1-for-families/
+      TZ: Europe/Prague
 
