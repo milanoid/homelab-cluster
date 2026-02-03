@@ -15,15 +15,6 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: hpmini01
-      initContainers:
-        - name: set-password
-          image: busybox:latest
-          command: ["/bin/sh", "/scripts/set-password.sh"]
-          volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-            - mountPath: /scripts
-              name: password-init-script
       containers:
         - name: qbittorrent
           image: linuxserver/qbittorrent:5.1.4
@@ -80,7 +71,3 @@ spec:
           hostPath:
             path: /srv/qbittorrent/config
             type: DirectoryOrCreate
-        - name: password-init-script
-          configMap:
-            name: qbittorrent-password-init
-            defaultMode: 0755
