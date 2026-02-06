@@ -44,7 +44,7 @@ spec:
     doh:
       enabled: true
       envVars:
-        TUNNEL_DNS_UPSTREAM: "https://1.1.1.2/dns-query"
+        TUNNEL_DNS_UPSTREAM: "https://1.1.1.1/dns-query"
 
     DNS1: 8.8.8.8
     DNS2: 8.8.4.4
