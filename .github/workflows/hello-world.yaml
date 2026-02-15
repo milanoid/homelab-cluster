@@ -1,0 +1,11 @@
+name: Hello World
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: homelab-runners
+    steps:
+      - name: Hello from homelab
+        run: echo "Hello from self-hosted runner on $(hostname)"
