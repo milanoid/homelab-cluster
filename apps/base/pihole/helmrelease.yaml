@@ -46,9 +46,6 @@ spec:
       envVars:
         TUNNEL_DNS_UPSTREAM: "https://1.1.1.1/dns-query"
 
-    DNS1: 8.8.8.8
-    DNS2: 8.8.4.4
-
     capabilities:
       add:
         - SYS_TIME
@@ -63,6 +60,7 @@ spec:
 
     extraEnvVars:
       TZ: Europe/Prague
+      FTLCONF_dns_upstreams: "127.0.0.1#5053;8.8.8.8"
 
     nodeSelector:
       kubernetes.io/hostname: hpmini02
