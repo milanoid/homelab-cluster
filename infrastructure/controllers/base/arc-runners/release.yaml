@@ -27,3 +27,14 @@ spec:
     maxRunners: 3
     containerMode:
       type: "dind"
+    template:
+      spec:
+        containers:
+          - name: runner
+            resources:
+              requests:
+                cpu: "500m"
+                memory: "1Gi"
+              limits:
+                cpu: "2"
+                memory: "2Gi"
