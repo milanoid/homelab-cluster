@@ -21,12 +21,10 @@ spec:
   driftDetection:
     mode: enabled
   values:
-    githubConfigUrl: "https://github.com/milanoid"
+    githubConfigUrl: "https://github.com/milanoid/homelab-cluster"
     githubConfigSecret: github-pat
     minRunners: 0
     maxRunners: 3
-    containerMode:
-      type: "dind"
     template:
       spec:
         initContainers:
