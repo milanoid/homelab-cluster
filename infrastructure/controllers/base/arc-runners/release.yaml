@@ -23,8 +23,8 @@ spec:
   values:
     githubConfigUrl: "https://github.com/milanoid/homelab-cluster"
     githubConfigSecret: github-pat
-    minRunners: 0
-    maxRunners: 3
+    minRunners: 1
+    maxRunners: 5
     template:
       spec:
         initContainers:
@@ -47,7 +47,7 @@ spec:
                 memory: "1Gi"
               limits:
                 cpu: "2"
-                memory: "2Gi"
+                memory: "3Gi"
             volumeMounts:
               - name: work
                 mountPath: /home/runner/_work
@@ -62,6 +62,13 @@ spec:
             env:
               - name: DOCKER_GROUP_GID
                 value: "123"
+            resources:
+              requests:
+                cpu: "500m"
+                memory: "512Mi"
+              limits:
+                cpu: "2"
+                memory: "3Gi"
             securityContext:
               privileged: true
             volumeMounts:
