@@ -21,7 +21,7 @@ spec:
   driftDetection:
     mode: enabled
   values:
-    githubConfigUrl: "https://github.com/milanoid/homelab-cluster"
+    githubConfigUrl: "https://github.com/milanoid/fizz-buzz"
     githubConfigSecret: github-pat
     minRunners: 1
     maxRunners: 5
