@@ -1,13 +1,16 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: [
+    "config:best-practices",
+  ],
   kubernetes: {
     fileMatch: ["\\.yaml$"],
   },
   pinDigests: true,
   packageRules: [
     {
-      // Digest-only updates = same version tag, new SHA digest = silent rebuild (CVE fix applied upstream).
-      // These contain no version change — only security patches. Set automerge: true to merge automatically.
+      // Digest-only updates = same version tag, new SHA = silent rebuild (CVE fix applied upstream).
+      // Set automerge: true to merge these automatically.
       matchUpdateTypes: ["digest"],
       automerge: false,
     },
