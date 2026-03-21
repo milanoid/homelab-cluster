@@ -16,5 +16,11 @@
       ],
       automerge: false,
     },
+    {
+      matchManagers: [
+        'flux',
+      ],
+      pinDigests: false,
+    },
   ],
 }
