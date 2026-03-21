@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:latest
+              image: renovate/renovate:latest@sha256:92285747b3aac062a4f567762c272a12dce037843a20177a02c95b7c420e20cb
               args:
                 - milanoid/homelab-cluster
 
