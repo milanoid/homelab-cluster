@@ -43,6 +43,7 @@ spec:
 
     doh:
       enabled: true
+      tag: "2025.9.1"
       envVars:
         TUNNEL_DNS_UPSTREAM: "https://1.1.1.1/dns-query"
 
