@@ -9,6 +9,18 @@
     ],
   },
   pinDigests: true,
+  customManagers: [
+    {
+      customType: 'regex',
+      fileMatch: ['infrastructure/controllers/base/arc-.+/release\\.yaml'],
+      matchStrings: [
+        'chart: (?<depName>[\\w-]+)\\s+version: "(?<currentValue>[^"]+)"',
+      ],
+      datasourceTemplate: 'docker',
+      registryUrlTemplate: 'https://ghcr.io',
+      packageNameTemplate: 'actions/actions-runner-controller-charts/{{depName}}',
+    },
+  ],
   packageRules: [
     {
       matchUpdateTypes: [
