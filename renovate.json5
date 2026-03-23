@@ -12,7 +12,9 @@
   customManagers: [
     {
       customType: 'regex',
-      fileMatch: ['infrastructure/controllers/base/arc-.+/release\\.yaml'],
+      managerFilePatterns: [
+        '/infrastructure/controllers/base/arc-.+/release\\.yaml/',
+      ],
       matchStrings: [
         'chart: (?<depName>[\\w-]+)\\s+version: "(?<currentValue>[^"]+)"',
       ],
