@@ -38,7 +38,7 @@
     },
     {
       matchManagers: [
-        'regex',
+        'custom.regex',
       ],
       matchPackageNames: [
         'actions/actions-runner-controller-charts/**',
