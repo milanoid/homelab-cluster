@@ -58,6 +58,10 @@ spec:
         - 127.0.0.1
         - 8.8.8.8
 
+    dnsmasq:
+      customSettings: |
+        dns-forward-max=300
+
     extraEnvVars:
       TZ: Europe/Prague
       FTLCONF_dns_upstreams: "127.0.0.1#5053;8.8.8.8"
