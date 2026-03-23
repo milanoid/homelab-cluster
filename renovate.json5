@@ -34,5 +34,14 @@
       ],
       pinDigests: false,
     },
+    {
+      matchManagers: [
+        'regex',
+      ],
+      matchPackageNames: [
+        'actions/actions-runner-controller-charts/**',
+      ],
+      pinDigests: false,
+    },
   ],
 }
