@@ -42,9 +42,7 @@ spec:
       enabled: false
 
     doh:
-      enabled: true
-      envVars:
-        TUNNEL_DNS_UPSTREAM: "https://1.1.1.1/dns-query"
+      enabled: false
 
     capabilities:
       add:
@@ -58,9 +56,54 @@ spec:
         - 127.0.0.1
         - 8.8.8.8
 
+    dnsmasq:
+      customSettings: |
+        dns-forward-max=300
+
     extraEnvVars:
       TZ: Europe/Prague
-      FTLCONF_dns_upstreams: "127.0.0.1#5053;8.8.8.8"
+      FTLCONF_dns_upstreams: "127.0.0.1#5335"
+
+    extraContainers:
+      - name: unbound
+        image: mvance/unbound:1.21.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5335
+            protocol: TCP
+          - containerPort: 5335
+            protocol: UDP
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+        volumeMounts:
+          - name: unbound-config
+            mountPath: /opt/unbound/etc/unbound/
+            readOnly: true
+        readinessProbe:
+          exec:
+            command: ["drill", "-p", "5335", "cloudflare.com", "@127.0.0.1"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command: ["drill", "-p", "5335", "cloudflare.com", "@127.0.0.1"]
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          failureThreshold: 5
+
+    # dict format: keys become volume names (chart template: range $key, $value)
+    extraVolumes:
+      unbound-config:
+        configMap:
+          name: pihole-unbound-config
 
     nodeSelector:
       kubernetes.io/hostname: hpmini02
