@@ -1,0 +1,13 @@
+checks:
+  exclude:
+    # Homelab doesn't enforce resource quotas
+    - "resource-request-required"
+    - "cpu-requests"
+    - "memory-requests"
+    - "cpu-limits"
+    - "memory-limits"
+    # Apps write to mounted volumes; read-only root fs not enforced
+    - "no-read-only-root-fs"
+    # Not all apps have probes; not a hard requirement for homelab
+    - "liveness-probe"
+    - "readiness-probe"

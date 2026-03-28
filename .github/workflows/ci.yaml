@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  yaml-lint:
+    name: YAML Lint
+    runs-on: homelab-runners
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install yamllint
+        run: pip install yamllint
+      - name: Run yamllint
+        run: yamllint -c .yamllint.yaml .
+
+  kubeconform:
+    name: Kubeconform
+    runs-on: homelab-runners
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kustomize and kubeconform
+        run: |
+          curl -sL "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+          curl -sL "https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz" | tar xz
+          sudo mv kubeconform /usr/local/bin/
+      - name: Validate kustomize overlays
+        run: |
+          set -euo pipefail
+          for overlay in \
+            apps/staging \
+            clusters/staging \
+            infrastructure/controllers/staging \
+            monitoring/controllers/staging \
+            persistent-volumes/staging; do
+            echo "--- Validating $overlay ---"
+            kustomize build "$overlay" | kubeconform \
+              --strict \
+              --ignore-missing-schemas \
+              --kubernetes-version 1.32.0 \
+              --summary
+          done
+
+  kube-linter:
+    name: Kube Linter
+    runs-on: homelab-runners
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run kube-linter
+        uses: stackrox/kube-linter-action@v1
+        with:
+          directory: .
+          config: .kube-linter.yaml

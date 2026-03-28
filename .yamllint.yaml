@@ -1,0 +1,8 @@
+extends: default
+rules:
+  line-length:
+    max: 200  # image digests and long hostnames exceed default 80-char limit
+  comments:
+    min-spaces-from-content: 1  # allow single-space inline comments
+  truthy:
+    allowed-values: ['true', 'false']
