@@ -21,8 +21,8 @@ spec:
   driftDetection:
     mode: enabled
   values:
-    githubConfigUrl: "https://github.com/milanoid/fizz-buzz"
-    githubConfigSecret: github-pat
+    githubConfigUrl: "https://github.com/milanoid"
+    githubConfigSecret: github-app
     minRunners: 1
     maxRunners: 10
     template:

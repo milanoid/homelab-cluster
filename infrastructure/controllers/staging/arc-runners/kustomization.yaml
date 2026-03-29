@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: arc-runners
 resources:
   - ../../base/arc-runners/
-  - github-pat-secret.yaml
+  - github-app-secret.yaml
