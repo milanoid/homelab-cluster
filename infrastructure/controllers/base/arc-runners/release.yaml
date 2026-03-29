@@ -21,7 +21,7 @@ spec:
   driftDetection:
     mode: enabled
   values:
-    githubConfigUrl: "https://github.com/milanoid"
+    githubConfigUrl: "https://github.com/milanoid-labs"
     githubConfigSecret: github-app
     minRunners: 1
     maxRunners: 10
