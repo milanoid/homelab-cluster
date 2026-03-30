@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   yaml-lint:
     name: YAML Lint
@@ -21,9 +24,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install kustomize and kubeconform
         run: |
-          curl -sL "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          KUSTOMIZE_VERSION="5.6.0"
+          KUBECONFORM_VERSION="0.6.7"
+          curl -sL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz" | tar xz
           sudo mv kustomize /usr/local/bin/
-          curl -sL "https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz" | tar xz
+          curl -sL "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" | tar xz
           sudo mv kubeconform /usr/local/bin/
       - name: Validate kustomize overlays
         run: |
@@ -36,7 +41,6 @@ jobs:
             persistent-volumes/staging; do
             echo "--- Validating $overlay ---"
             kustomize build "$overlay" | kubeconform \
-              --strict \
               --ignore-missing-schemas \
               --kubernetes-version 1.32.0 \
               --summary

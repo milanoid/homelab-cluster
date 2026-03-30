@@ -1,7 +1,10 @@
 extends: default
+ignore: |
+  **/*-secrets.yaml
+  **/*-tunnel-credentials.yaml
 rules:
   line-length:
-    max: 200  # image digests and long hostnames exceed default 80-char limit
+    max: 1000  # SOPS-encrypted values, image digests, and long hostnames
   comments:
     min-spaces-from-content: 1  # allow single-space inline comments
   truthy:
