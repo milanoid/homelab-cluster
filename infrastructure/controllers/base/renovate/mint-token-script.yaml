@@ -11,7 +11,12 @@ data:
     # Generate a GitHub App installation token from App ID + private key.
     # Writes the token to /shared/token for the Renovate container.
 
+    apk add --no-cache openssl >/dev/null 2>&1
+
+    trap 'rm -f /tmp/app-key.pem' EXIT
+
     # Decode base64-encoded PEM key
+    umask 077
     echo "${GITHUB_APP_KEY}" | base64 -d > /tmp/app-key.pem
 
     # Build JWT (valid for 10 minutes)
@@ -45,5 +50,4 @@ data:
     fi
 
     echo "$TOKEN" > /shared/token
-    rm -f /tmp/app-key.pem
     echo "GitHub App installation token generated successfully"
