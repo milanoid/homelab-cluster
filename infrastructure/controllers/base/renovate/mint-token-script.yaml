@@ -49,5 +49,7 @@ data:
       exit 1
     fi
 
+    # Reset umask so the Renovate container (different UID) can read the token
+    umask 022
     echo "$TOKEN" > /shared/token
     echo "GitHub App installation token generated successfully"
