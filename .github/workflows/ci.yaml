@@ -14,7 +14,7 @@ jobs:
     runs-on: homelab-runners
     container: pipelinecomponents/yamllint:latest
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Run yamllint
         run: yamllint -c .yamllint.yaml .
 
@@ -22,7 +22,7 @@ jobs:
     name: Kubeconform
     runs-on: homelab-runners
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Install kustomize and kubeconform
         run: |
           KUSTOMIZE_VERSION="5.6.0"
@@ -51,7 +51,7 @@ jobs:
     name: Kube Linter
     runs-on: homelab-runners
     steps:
-      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Run kube-linter
         uses: stackrox/kube-linter-action@4586e0224d31e1aa7798b8cb2e3817c6a93ff2ec # v1
         with:
