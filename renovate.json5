@@ -45,5 +45,12 @@
       ],
       pinDigests: false,
     },
+    {
+      matchPackageNames: [
+        'renovate/renovate',
+      ],
+      schedule: ['before 9am on monday'],
+      automerge: true,
+    },
   ],
 }
