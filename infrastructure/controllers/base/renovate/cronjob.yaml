@@ -10,18 +10,49 @@ spec:
     spec:
       template:
         spec:
+          initContainers:
+            - name: mint-token
+              image: alpine:3.21@sha256:8aeb753a4455dcaab477dc74b1f4acb91a13e80d637721a4d1a68e4251cbcd9c
+              command: ["/bin/sh", "/scripts/mint-token.sh"]
+              env:
+                - name: GITHUB_APP_ID
+                  valueFrom:
+                    configMapKeyRef:
+                      name: renovate-configmap
+                      key: GITHUB_APP_ID
+                - name: GITHUB_INSTALLATION_ID
+                  valueFrom:
+                    configMapKeyRef:
+                      name: renovate-configmap
+                      key: GITHUB_INSTALLATION_ID
+                - name: GITHUB_APP_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: renovate-container-env
+                      key: GITHUB_APP_KEY
+              volumeMounts:
+                - name: shared
+                  mountPath: /shared
+                - name: mint-script
+                  mountPath: /scripts
+              securityContext:
+                allowPrivilegeEscalation: false
+                runAsUser: 1000
+
           containers:
             - name: renovate
               image: renovate/renovate:43.91.5@sha256:5dfeab680f40edd2713b8fcae574824e60d2c831b8d89cc965e51621894c7084
+              command: ["/bin/sh", "-c"]
               args:
-                - milanoid-labs/homelab-cluster
+                - export RENOVATE_TOKEN=$(cat /shared/token) && renovate milanoid-labs/homelab-cluster
 
               envFrom:
-                - secretRef:
-                    # GitHub App private key (RENOVATE_GITHUB_APP_KEY)
-                    name: renovate-container-env
                 - configMapRef:
                     name: renovate-configmap
+              volumeMounts:
+                - name: shared
+                  mountPath: /shared
+                  readOnly: true
               resources:
                 requests:
                   cpu: 100m
@@ -29,5 +60,13 @@ spec:
                 limits:
                   cpu: "1"
                   memory: 512Mi
+
+          volumes:
+            - name: shared
+              emptyDir: {}
+            - name: mint-script
+              configMap:
+                name: renovate-mint-token-script
+                defaultMode: 0755
 
           restartPolicy: Never

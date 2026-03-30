@@ -29,28 +29,19 @@ fi
 # --- Base64-encode the PEM key (avoids multiline YAML issues) ---
 KEY_B64="$(base64 < "${RENOVATE_GITHUB_APP_KEY_FILE}" | tr -d '\n')"
 
-# --- Build plaintext secret in a temp file ---
-TMPFILE="$(mktemp).yaml"
-trap 'rm -f "$TMPFILE"' EXIT
-
-cat > "$TMPFILE" <<EOF
+# --- Write plaintext secret to the target file ---
+cat > "${SECRET_FILE}" <<EOF
 apiVersion: v1
 kind: Secret
 metadata:
   creationTimestamp: null
   name: renovate-container-env
 stringData:
-  RENOVATE_GITHUB_APP_KEY: "${KEY_B64}"
+  GITHUB_APP_KEY: "${KEY_B64}"
 EOF
 
-# --- Encrypt using the age public key ---
-AGE_KEY="age1jnfhet7cj900tg9f0dwgqktjwux4km4hen8gnevpujm5260sayesujm92y"
-
-sops --encrypt \
-  --age "$AGE_KEY" \
-  --encrypted-regex '^(data|stringData)$' \
-  --input-type yaml --output-type yaml \
-  "$TMPFILE" > "${SECRET_FILE}"
+# --- Encrypt in place using .sops.yaml rules ---
+sops --encrypt --in-place "${SECRET_FILE}"
 
 echo "✅ Secret encrypted and written to ${SECRET_FILE}"
 echo "   Verify with: sops ${SECRET_FILE}"

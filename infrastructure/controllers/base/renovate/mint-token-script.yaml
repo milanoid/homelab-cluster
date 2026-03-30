@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: renovate-mint-token-script
+  namespace: renovate
+data:
+  mint-token.sh: |
+    #!/bin/sh
+    set -eu
+
+    # Generate a GitHub App installation token from App ID + private key.
+    # Writes the token to /shared/token for the Renovate container.
+
+    # Decode base64-encoded PEM key
+    echo "${GITHUB_APP_KEY}" | base64 -d > /tmp/app-key.pem
+
+    # Build JWT (valid for 10 minutes)
+    NOW=$(date +%s)
+    IAT=$((NOW - 60))
+    EXP=$((NOW + 600))
+
+    b64url() { openssl base64 -e -A | tr '+/' '-_' | tr -d '='; }
+
+    HEADER=$(printf '{"alg":"RS256","typ":"JWT"}' | b64url)
+    PAYLOAD=$(printf '{"iat":%d,"exp":%d,"iss":"%s"}' "$IAT" "$EXP" "$GITHUB_APP_ID" | b64url)
+    SIGNATURE=$(printf '%s.%s' "$HEADER" "$PAYLOAD" | \
+      openssl dgst -sha256 -sign /tmp/app-key.pem -binary | b64url)
+
+    JWT="${HEADER}.${PAYLOAD}.${SIGNATURE}"
+
+    # Exchange JWT for an installation access token
+    RESPONSE=$(wget -q -O - \
+      --header="Authorization: Bearer ${JWT}" \
+      --header="Accept: application/vnd.github+json" \
+      --post-data="" \
+      "https://api.github.com/app/installations/${GITHUB_INSTALLATION_ID}/access_tokens")
+
+    # Parse token from JSON response (avoid jq dependency)
+    TOKEN=$(echo "$RESPONSE" | sed -n 's/.*"token" *: *"\([^"]*\)".*/\1/p')
+
+    if [ -z "$TOKEN" ]; then
+      echo "ERROR: Failed to get installation token" >&2
+      echo "Response: $RESPONSE" >&2
+      exit 1
+    fi
+
+    echo "$TOKEN" > /shared/token
+    rm -f /tmp/app-key.pem
+    echo "GitHub App installation token generated successfully"
