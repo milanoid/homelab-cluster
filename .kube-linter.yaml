@@ -1,3 +1,4 @@
+---
 checks:
   exclude:
     # Homelab doesn't enforce resource quotas
@@ -8,3 +9,9 @@ checks:
     # Not all apps have probes; not a hard requirement for homelab
     - "no-liveness-probe"
     - "no-readiness-probe"
+    # Kustomize injects namespaces at build time; kube-linter scans raw files
+    - "dangling-service"
+    # linuxserver.io images require root; nginx needs root for port binding
+    - "run-as-non-root"
+    # Meaningless on a 2-3 node homelab cluster
+    - "no-anti-affinity"
