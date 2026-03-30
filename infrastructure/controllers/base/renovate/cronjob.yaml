@@ -12,7 +12,7 @@ spec:
         spec:
           initContainers:
             - name: mint-token
-              image: alpine:3.21@sha256:8aeb753a4455dcaab477dc74b1f4acb91a13e80d637721a4d1a68e4251cbcd9c
+              image: alpine:3.21@sha256:22e0ec13c0db6b3e1ba3280e831fc50ba7bffe58e81f31670a64b1afede247bc
               command: ["/bin/sh", "/scripts/mint-token.sh"]
               env:
                 - name: GITHUB_APP_ID
