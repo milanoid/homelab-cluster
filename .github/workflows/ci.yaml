@@ -11,10 +11,8 @@ jobs:
     runs-on: homelab-runners
     steps:
       - uses: actions/checkout@v4
-      - name: Install yamllint
-        run: pip install yamllint
       - name: Run yamllint
-        run: yamllint -c .yamllint.yaml .
+        run: pipx run yamllint -c .yamllint.yaml .
 
   kubeconform:
     name: Kubeconform
