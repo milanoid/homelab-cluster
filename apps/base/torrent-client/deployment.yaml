@@ -20,7 +20,7 @@ spec:
         kubernetes.io/hostname: hpmini01
       containers:
         - name: qbittorrent
-          image: linuxserver/qbittorrent:5.1.4@sha256:474ef1f1c63fc060236e85cd6ec4a3232aea5a0d7a033c6bab9911039933f147
+          image: linuxserver/qbittorrent:20.04.1@sha256:fc98c8af048936d0070dc5e5992feab08664f8a61a860d91be02f782f8721485
           # Health checks to auto-restart if UI hangs
           startupProbe:
             httpGet:

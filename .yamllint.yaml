@@ -1,0 +1,11 @@
+extends: default
+ignore: |
+  **/*secret*.yaml
+  **/*credentials*.yaml
+rules:
+  line-length:
+    max: 1000  # SOPS-encrypted values, image digests, and long hostnames
+  comments:
+    min-spaces-from-content: 1  # allow single-space inline comments
+  truthy:
+    check-keys: false
