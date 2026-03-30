@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - name: Run yamllint
-        run: pipx run yamllint -c .yamllint.yaml .
+        uses: ibiqlik/action-yamllint@2576378a8e339169678f9939646ee3ee325e845c # v3
+        with:
+          config_file: .yamllint.yaml
 
   kubeconform:
     name: Kubeconform
@@ -35,9 +37,9 @@ jobs:
           set -euo pipefail
           for overlay in \
             apps/staging \
-            clusters/staging \
             infrastructure/controllers/staging \
             monitoring/controllers/staging \
+            monitoring/configs/staging \
             persistent-volumes/staging; do
             echo "--- Validating $overlay ---"
             kustomize build "$overlay" | kubeconform \
