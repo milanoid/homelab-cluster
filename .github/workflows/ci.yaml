@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Run kube-linter
-        uses: stackrox/kube-linter-action@4586e0224d31e1aa7798b8cb2e3817c6a93ff2ec # v1
+        uses: stackrox/kube-linter-action@87802a2f4e01abebb3ee3c67a3002fea71f6eae5 # v1
         with:
           directory: .
           config: .kube-linter.yaml
