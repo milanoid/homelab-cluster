@@ -61,8 +61,8 @@ spec:
         - 8.8.8.8
 
     dnsmasq:
-      customSettings: |
-        dns-forward-max=300
+      customSettings:
+        - dns-forward-max=300
 
     extraEnvVars:
       TZ: Europe/Prague
