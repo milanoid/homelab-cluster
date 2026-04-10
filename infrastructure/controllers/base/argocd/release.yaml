@@ -22,10 +22,12 @@ spec:
   driftDetection:
     mode: enabled
   values:
+    configs:
+      params:
+        server.insecure: true
     dex:
       enabled: false
     server:
-      insecure: true
       ingress:
         enabled: true
         ingressClassName: traefik
