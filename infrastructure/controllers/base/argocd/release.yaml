@@ -25,6 +25,7 @@ spec:
     dex:
       enabled: false
     server:
+      insecure: true
       ingress:
         enabled: true
         ingressClassName: traefik
