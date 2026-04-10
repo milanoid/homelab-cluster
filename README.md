@@ -23,7 +23,7 @@ With Flux CD, managing the cluster and deploying applications is driven by git c
 
 ### ArgoCD
 
-ArgoCD is deployed for testing/evaluation alongside Flux. It manages apps under `apps/argocd/` only — fully isolated from Flux-managed resources. UI available at `argocd.milanoid.net` (LAN/VPN).
+ArgoCD is deployed for testing/evaluation alongside Flux. By convention, it is used for apps under `apps/argocd/`; this README does not imply an enforced isolation boundary from Flux-managed resources. UI available at `argocd.milanoid.net` (LAN/VPN).
 
 ### Hosted apps
 
