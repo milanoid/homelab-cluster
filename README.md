@@ -21,9 +21,14 @@ The machine has installed [K3s](https://k3s.io/). It is an easy-to-use, lightwei
 
 With Flux CD, managing the cluster and deploying applications is driven by git changes. No need to run `kubectl` commands manually. Push a change to the git repository and Flux will take care of the rest.
 
+### ArgoCD
+
+ArgoCD is deployed for testing/evaluation alongside Flux. It manages apps under `apps/argocd/` only — fully isolated from Flux-managed resources. UI available at `argocd.milanoid.net` (LAN/VPN).
+
 ### Hosted apps
 
 - Linkding (bookmark manager) https://lkd.milanoid.net/
 - Audiobookshelf https://audiobooks.milanoid.net/
 - Webhosting https://web.milanoid.net/
 - Pi-hole (pihole.milanoid.net - LAN/VPN only)
+- ArgoCD (argocd.milanoid.net - LAN/VPN only)
