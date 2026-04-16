@@ -2,9 +2,10 @@ FROM ghcr.io/actions/actions-runner:2.333.1@sha256:b57864c9fcda15ea4a270446aa9cf
 
 USER root
 RUN apt-get update \
+    && apt-get install -y curl \
     && mkdir -p -m 755 /etc/apt/keyrings \
-    && wget -qO /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-         https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+         | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] \
          https://cli.github.com/packages stable main" \
