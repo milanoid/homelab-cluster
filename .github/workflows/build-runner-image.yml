@@ -1,0 +1,41 @@
+name: Build Runner Image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'runner/Dockerfile'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: homelab-runners
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/milanoid-labs/homelab-runner
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: runner
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
