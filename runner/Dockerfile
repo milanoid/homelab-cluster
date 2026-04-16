@@ -1,16 +1,11 @@
 FROM ghcr.io/actions/actions-runner:2.333.1@sha256:b57864c9fcda15ea4a270446aa9cfb108b819a26f6e71fc515f6caf6c27989c6
 
+ARG GH_VERSION=2.89.0
+
 USER root
-RUN apt-get update \
-    && apt-get install -y curl \
-    && mkdir -p -m 755 /etc/apt/keyrings \
-    && curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg \
-         | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
-    && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] \
-         https://cli.github.com/packages stable main" \
-         | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && apt-get update \
-    && apt-get install -y gh \
-    && rm -rf /var/lib/apt/lists/*
+RUN ARCH=$(dpkg --print-architecture) \
+    && curl -fsSL -o /tmp/gh.deb \
+         "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${ARCH}.deb" \
+    && dpkg -i /tmp/gh.deb \
+    && rm /tmp/gh.deb
 USER runner
