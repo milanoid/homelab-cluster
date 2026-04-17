@@ -38,6 +38,7 @@ jobs:
           for overlay in \
             apps/staging \
             infrastructure/controllers/staging \
+            infrastructure/k3s-upgrade-plans \
             monitoring/controllers/staging \
             monitoring/configs/staging \
             persistent-volumes/staging; do
