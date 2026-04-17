@@ -38,13 +38,14 @@ jobs:
           for overlay in \
             apps/staging \
             infrastructure/controllers/staging \
+            infrastructure/k3s-upgrade-plans \
             monitoring/controllers/staging \
             monitoring/configs/staging \
             persistent-volumes/staging; do
             echo "--- Validating $overlay ---"
             kustomize build --load-restrictor LoadRestrictionsNone "$overlay" | kubeconform \
               --ignore-missing-schemas \
-              --kubernetes-version 1.32.0 \
+              --kubernetes-version 1.34.0 \
               --summary
           done
 

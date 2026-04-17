@@ -6,3 +6,4 @@ resources:
   - arc-controller
   - arc-runners
   - argocd
+  - system-upgrade-controller
