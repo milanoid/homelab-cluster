@@ -1,0 +1,19 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homarr
+spec:
+  ingressClassName: traefik
+  rules:
+    # to be accessed from LAN/VPN only - DNS in CF pointing to local IP
+    - host: homarr.milanoid.net # subdomain of my cloudflare domain
+      http:
+        paths:
+          - backend:
+              service:
+                name: homarr
+                port:
+                  number: 7575
+            path: /
+            pathType: Prefix
