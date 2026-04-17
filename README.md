@@ -27,7 +27,7 @@ ArgoCD is deployed for testing/evaluation alongside Flux. By convention, it is u
 
 Guestbook app health (visible from LAN/VPN only — external viewers will see a broken image):
 
-[![Guestbook status](https://argocd.milanoid.net/api/badge?name=guestbook&showAppName=true&revision=true)](https://argocd.milanoid.net/applications/guestbook)
+[![Guestbook status](http://argocd.milanoid.net/api/badge?name=guestbook&showAppName=true&revision=true)](http://argocd.milanoid.net/applications/guestbook)
 
 ### Hosted apps
 
