@@ -29,6 +29,7 @@ Guestbook app health:
 
 [![Guestbook status](https://argocd-badge.milanoid.net/api/badge?name=guestbook&showAppName=true&revision=true)](https://argocd.milanoid.net/applications/guestbook)
 
+
 ### Hosted apps
 
 - Linkding (bookmark manager) https://lkd.milanoid.net/
