@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared-badge
+spec:
+  selector:
+    matchLabels:
+      app: cloudflared-badge
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cloudflared-badge
+    spec:
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2026.3.0@sha256:6b599ca3e974349ead3286d178da61d291961182ec3fe9c505e1dd02c8ac31b0
+          args:
+            - tunnel
+            - --config
+            - /etc/cloudflared/config/config.yaml
+            - run
+          ports:
+            - containerPort: 2000
+              name: metrics
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 2000
+            failureThreshold: 1
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cloudflared/config
+              readOnly: true
+            - name: creds
+              mountPath: /etc/cloudflared/creds
+              readOnly: true
+      volumes:
+        - name: creds
+          secret:
+            secretName: argocd-badge-tunnel-credentials
+        - name: config
+          configMap:
+            name: cloudflared-badge
+            items:
+              - key: config.yaml
+                path: config.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-badge
+data:
+  config.yaml: |
+    tunnel: argocd-badge
+    credentials-file: /etc/cloudflared/creds/credentials.json
+
+    metrics: 0.0.0.0:2000
+    no-autoupdate: true
+
+    ingress:
+      - hostname: argocd-badge.milanoid.net
+        path: ^/api/badge(/.*)?$
+        service: http://argocd-server:80
+      - hostname: argocd-badge.milanoid.net
+        service: http_status:404
+      - service: http_status:404
