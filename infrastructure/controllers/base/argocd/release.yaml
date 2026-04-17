@@ -25,6 +25,7 @@ spec:
     configs:
       cm:
         timeout.reconciliation: 180s
+        statusbadge.enabled: "true"
       params:
         server.insecure: true
     dex:
