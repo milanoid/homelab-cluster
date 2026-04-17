@@ -25,9 +25,9 @@ With Flux CD, managing the cluster and deploying applications is driven by git c
 
 ArgoCD is deployed for testing/evaluation alongside Flux. By convention, it is used for apps under `apps/argocd/`; this README does not imply an enforced isolation boundary from Flux-managed resources. UI available at `argocd.milanoid.net` (LAN/VPN).
 
-Guestbook app health (visible from LAN/VPN only — external viewers will see a broken image):
+Guestbook app health:
 
-[![Guestbook status](https://argocd.milanoid.net/api/badge?name=guestbook&showAppName=true&revision=true)](https://argocd.milanoid.net/applications/guestbook)
+[![Guestbook status](https://argocd-badge.milanoid.net/api/badge?name=guestbook&showAppName=true&revision=true)](https://argocd.milanoid.net/applications/guestbook)
 
 ### Hosted apps
 
