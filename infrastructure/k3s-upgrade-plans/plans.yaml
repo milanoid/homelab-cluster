@@ -13,7 +13,7 @@ spec:
         operator: Exists
   serviceAccountName: system-upgrade
   upgrade:
-    image: rancher/k3s-upgrade@sha256:be278597a6d115ec5ed900f9e6866ad51522c3ced2cf6b80def9c3abf0d774bc
+    image: rancher/k3s-upgrade@sha256:b5196d2799af4baa8aefb1653f2828b9145b53eb21d8508cec04f307eab3e11f
   version: v1.34.3+k3s1
 ---
 apiVersion: upgrade.cattle.io/v1
@@ -32,8 +32,8 @@ spec:
     args:
       - prepare
       - server-plan
-    image: rancher/k3s-upgrade@sha256:be278597a6d115ec5ed900f9e6866ad51522c3ced2cf6b80def9c3abf0d774bc
+    image: rancher/k3s-upgrade@sha256:b5196d2799af4baa8aefb1653f2828b9145b53eb21d8508cec04f307eab3e11f
   serviceAccountName: system-upgrade
   upgrade:
-    image: rancher/k3s-upgrade@sha256:be278597a6d115ec5ed900f9e6866ad51522c3ced2cf6b80def9c3abf0d774bc
+    image: rancher/k3s-upgrade@sha256:b5196d2799af4baa8aefb1653f2828b9145b53eb21d8508cec04f307eab3e11f
   version: v1.34.3+k3s1
