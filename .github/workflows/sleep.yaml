@@ -1,5 +1,5 @@
 ---
-name: Hello World
+name: Sleep
 
 on:
   workflow_dispatch:
