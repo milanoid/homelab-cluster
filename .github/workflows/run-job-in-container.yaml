@@ -1,0 +1,24 @@
+---
+name: Run job in a container
+
+on:
+  workflow_dispatch:
+    inputs:
+      sleep_seconds:
+        description: how long the workflow shoudl sleep? (s)
+        default: '300'
+        type: string
+
+jobs:
+  hello:
+    runs-on: homelab-runners
+    container:
+      image: node:18
+      env:
+        NODE_ENV: development
+    steps:
+      - name: Hello from homelab
+        run: |
+          echo "Hello from self-hosted runner on $(hostname)"
+          echo "sleeping for ${{inputs.sleep_seconds}} seconds"
+          sleep ${{inputs.sleep_seconds}}
