@@ -8,7 +8,15 @@ resources:
   - ui-token-secret.yaml
   # the // separates the repo root from the path inside it, per kustomize's git-URL convention
   # pinned to the commit for tag v4.0.6 (tags are mutable refs, commits aren't)
-  - github.com/argoproj/argo-workflows//manifests/cluster-install?ref=277e9cef0ad16d7eaaab253573d0695951a65dbd
+  #
+  # Composed from crds/minimal + cluster-install-no-crds rather than cluster-install, which
+  # hardcodes crds/full. The full CRDs embed the whole Kubernetes PodSpec schema for
+  # client-side validation (11 MB, 179k lines); rebuilding and server-side applying them
+  # every reconcile was ~99% of this Kustomization's CPU cost. Both variants produce the
+  # same object set — only the CRD schema bodies shrink.
+  # Both refs MUST stay on the same commit.
+  - github.com/argoproj/argo-workflows//manifests/base/crds/minimal?ref=277e9cef0ad16d7eaaab253573d0695951a65dbd
+  - github.com/argoproj/argo-workflows//manifests/cluster-install-no-crds?ref=277e9cef0ad16d7eaaab253573d0695951a65dbd
 images:
   - name: quay.io/argoproj/workflow-controller
     newTag: v4.0.6

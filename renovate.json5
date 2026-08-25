@@ -68,6 +68,14 @@
       pinDigests: false,
     },
     {
+      // argo-workflows is referenced by two kustomize git refs (crds/minimal and
+      // cluster-install-no-crds). They must move together or CRDs and controller end up
+      // on mismatched versions, so group them into a single PR.
+      matchManagers: ['kustomize'],
+      matchPackageNames: ['argoproj/argo-workflows'],
+      groupName: 'argo-workflows',
+    },
+    {
       matchManagers: ['custom.regex'],
       matchPackageNames: ['k3s-io/k3s'],
       pinDigests: false,

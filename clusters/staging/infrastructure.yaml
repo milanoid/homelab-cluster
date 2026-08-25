@@ -5,8 +5,12 @@ metadata:
   name: infrastructure-controllers
   namespace: flux-system
 spec:
-  interval: 1m0s
-  retryInterval: 1m
+  # Deliberately slower than the 1m0s used elsewhere: this Kustomization pulls argo-workflows
+  # and argo-rollouts from upstream git on every reconcile, which is far more expensive than
+  # any other path. retryInterval is 5m because the failure path is the costly one — upstream
+  # git-fetch timeouts have occurred here, and a 1m retry would churn through an outage.
+  interval: 10m0s
+  retryInterval: 5m
   timeout: 5m
   sourceRef:
     kind: GitRepository
