@@ -42,13 +42,15 @@ spec:
             env:
               - name: DOCKER_HOST
                 value: unix:///var/run/docker.sock
+            # Sized from 7d of real CI runs (66 ephemeral pods): peak 469Mi / 133m.
+            # Limits keep ~2x memory and ~11x CPU headroom for heavier future jobs.
             resources:
               requests:
-                cpu: "500m"
-                memory: "1Gi"
+                cpu: "100m"
+                memory: "256Mi"
               limits:
-                cpu: "2"
-                memory: "3Gi"
+                cpu: "1500m"
+                memory: "1Gi"
             volumeMounts:
               - name: work
                 mountPath: /home/runner/_work
@@ -63,13 +65,15 @@ spec:
             env:
               - name: DOCKER_GROUP_GID
                 value: "123"
+            # Sized from 7d of real CI runs: peak 178Mi / 27m. Kept at a 1Gi limit rather
+            # than tighter because image builds run here and are burstier than observed.
             resources:
               requests:
-                cpu: "500m"
-                memory: "512Mi"
+                cpu: "50m"
+                memory: "128Mi"
               limits:
-                cpu: "2"
-                memory: "3Gi"
+                cpu: "1500m"
+                memory: "1Gi"
             securityContext:
               privileged: true
             volumeMounts:

@@ -35,6 +35,15 @@ spec:
             - containerPort: 80
               protocol: TCP
               name: http
+          # Sized from 7d observed usage (p95 70Mi, max 71Mi). Requests matter most here:
+          # without them pi-hole is BestEffort and is evicted first under node memory
+          # pressure, which takes out DNS for the whole cluster.
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "96Mi"
+            limits:
+              memory: "256Mi"
           env:
             - name: TZ
               value: Europe/Prague
