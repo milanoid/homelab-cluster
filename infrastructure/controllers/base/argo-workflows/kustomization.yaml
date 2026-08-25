@@ -6,9 +6,10 @@ resources:
   - ui-rolebinding.yaml
   - ui-clusterrolebinding.yaml
   - ui-token-secret.yaml
-  # the // separates the repo root from the path inside it, per kustomize's git-URL convention
-  # pinned to the commit for tag v4.0.6 (tags are mutable refs, commits aren't)
-  - github.com/argoproj/argo-workflows//manifests/cluster-install?ref=277e9cef0ad16d7eaaab253573d0695951a65dbd
+  # vendored from github.com/argoproj/argo-workflows//manifests/cluster-install at commit
+  # 277e9cef0ad16d7eaaab253573d0695951a65dbd (tag v4.0.6). Fetching this remotely on every
+  # Flux reconcile added ~28s of CPU/network work every minute; see PR that vendored this.
+  - ./upstream/manifests/cluster-install
 images:
   - name: quay.io/argoproj/workflow-controller
     newTag: v4.0.6

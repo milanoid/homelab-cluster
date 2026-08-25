@@ -2,9 +2,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  # pinned to the commit for tag v1.8.3 (tags are mutable refs, commits aren't)
-  - github.com/argoproj/argo-rollouts//manifests/cluster-install?ref=49fa1516cf71672b69e265267da4e1d16e1fe114
-  - https://raw.githubusercontent.com/argoproj/argo-rollouts/49fa1516cf71672b69e265267da4e1d16e1fe114/manifests/dashboard-install.yaml
+  # vendored from github.com/argoproj/argo-rollouts//manifests at commit
+  # 49fa1516cf71672b69e265267da4e1d16e1fe114 (tag v1.8.3). Fetching this remotely on every
+  # Flux reconcile added CPU/network work every minute; see PR that vendored this.
+  - ./upstream/manifests/cluster-install
+  - ./upstream/manifests/dashboard-install.yaml
 images:
   - name: quay.io/argoproj/argo-rollouts
     newTag: v1.8.3
