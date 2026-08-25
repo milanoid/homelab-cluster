@@ -22,6 +22,13 @@ spec:
           ports:
             - containerPort: 6767
               protocol: TCP
+          # Sized from 7d observed usage (p95 235Mi, max 236Mi)
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              memory: "512Mi"
           volumeMounts:
             - mountPath: /config
               name: bazarr-config

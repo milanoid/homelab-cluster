@@ -18,6 +18,13 @@ spec:
           image: sissbruecker/linkding:1.45.0@sha256:61b2eb9eed8e5772a473fb7f1f8923e046cb8cbbeb50e88150afd5ff287d4060
           ports:
             - containerPort: 9090
+          # Sized from 7d observed usage (p95 132Mi, max 132Mi)
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
           envFrom:
             - secretRef:
                 name: linkding-super-user

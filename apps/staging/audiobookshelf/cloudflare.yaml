@@ -28,6 +28,13 @@ spec:
             - containerPort: 2000
               name: metrics
               protocol: TCP
+          # Sized from 7d observed usage (p95 17-30Mi, max 18-30Mi)
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+            limits:
+              memory: "96Mi"
           livenessProbe:
             httpGet:
               # Cloudflared has a /ready endpoint which returns 200 if and only if

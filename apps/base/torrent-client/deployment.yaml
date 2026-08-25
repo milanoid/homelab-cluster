@@ -46,13 +46,18 @@ spec:
             periodSeconds: 15
             timeoutSeconds: 10
             failureThreshold: 10
+          # Sized from 7d observed usage: memory p95 840Mi / max 959Mi against the old 1Gi
+          # limit, and CPU p95 143m against the old 500m limit. On 2026-08-24 this pod was
+          # restarted by the liveness probe after 5 consecutive failures while memory sat at
+          # ~1023Mi — not an OOM kill (container_oom_events_total stayed 0), but the web UI
+          # stopped responding under combined memory and CPU-throttling pressure.
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "250m"
+              memory: "768Mi"
+              cpu: "300m"
             limits:
-              memory: "1Gi"
-              cpu: "500m"
+              memory: "1536Mi"
+              cpu: "1500m"
           envFrom:
             - configMapRef:
                 name: qbittorrent-configmap

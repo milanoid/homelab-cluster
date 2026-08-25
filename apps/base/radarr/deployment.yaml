@@ -22,6 +22,13 @@ spec:
           ports:
             - containerPort: 7878
               protocol: TCP
+          # Sized from 7d observed usage (p95 245Mi, max 280Mi)
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              memory: "512Mi"
           volumeMounts:
             - mountPath: /config
               name: radarr-config
