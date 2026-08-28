@@ -31,8 +31,55 @@ spec:
           kind: PrometheusRule
   values:
     # to see all possible values run `helm show values prometheus-community/kube-prometheus-stack`
+    # Resource requests/limits below: sized from live usage observed 2026-08-28
+    # (all monitoring pods were BestEffort before this — no requests/limits at all).
+    # Treat as a first pass; revisit once a week of persisted metrics history
+    # exists, same method as commit 5ddf7c1 used for app pods.
+    prometheus:
+      prometheusSpec:
+        resources:
+          requests:
+            cpu: 50m
+            memory: 512Mi
+          limits:
+            memory: 900Mi
+    alertmanager:
+      alertmanagerSpec:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            memory: 128Mi
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 48Mi
+        limits:
+          memory: 128Mi
+    kube-state-metrics:
+      resources:
+        requests:
+          cpu: 5m
+          memory: 32Mi
+        limits:
+          memory: 96Mi
+    prometheus-node-exporter:
+      resources:
+        requests:
+          cpu: 5m
+          memory: 24Mi
+        limits:
+          memory: 64Mi
     grafana:
       adminPassword: milan
+      resources:
+        requests:
+          cpu: 20m
+          memory: 192Mi
+        limits:
+          memory: 512Mi
       ingress:
         enabled: true
         ingressClassName: traefik
