@@ -92,7 +92,10 @@ spec:
         limits:
           memory: 64Mi
     grafana:
-      adminPassword: milan
+      admin:
+        existingSecret: grafana-admin-secret
+        userKey: admin-user
+        passwordKey: admin-password
       resources:
         requests:
           cpu: 20m
