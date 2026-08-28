@@ -37,12 +37,23 @@ spec:
     # exists, same method as commit 5ddf7c1 used for app pods.
     prometheus:
       prometheusSpec:
+        # Explicit rather than relying on the chart default, since retention
+        # is meaningless without the persistent storage below.
+        retention: 10d
         resources:
           requests:
             cpu: 50m
             memory: 512Mi
           limits:
             memory: 900Mi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 8Gi
     alertmanager:
       alertmanagerSpec:
         resources:
@@ -51,6 +62,14 @@ spec:
             memory: 32Mi
           limits:
             memory: 128Mi
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 1Gi
     prometheusOperator:
       resources:
         requests:
@@ -80,6 +99,12 @@ spec:
           memory: 192Mi
         limits:
           memory: 512Mi
+      persistence:
+        enabled: true
+        type: pvc
+        storageClassName: local-path
+        accessModes: ["ReadWriteOnce"]
+        size: 2Gi
       ingress:
         enabled: true
         ingressClassName: traefik
