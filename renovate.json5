@@ -76,15 +76,23 @@
       groupName: 'argo-workflows',
     },
     {
+      // spec.version in the k3s upgrade Plans is the single source of truth for the
+      // k3s release. system-upgrade-controller derives the upgrade image tag from it
+      // (CRD: "Image name. If the tag is omitted, the value from .status.latestVersion
+      // will be used"), so this is the only k3s dependency Renovate should manage.
       matchManagers: ['custom.regex'],
       matchPackageNames: ['k3s-io/k3s'],
       pinDigests: false,
       groupName: 'k3s upgrade',
     },
     {
+      // spec.upgrade.image is deliberately left untagged so the tag follows
+      // spec.version. Renovate must not touch it: adding a tag or a pinned digest
+      // (pinDigests is true globally) would break that derivation and let the image
+      // drift out of step with spec.version -- which silently no-ops the upgrade.
       matchManagers: ['kubernetes'],
       matchPackageNames: ['rancher/k3s-upgrade'],
-      groupName: 'k3s upgrade',
+      enabled: false,
     },
     {
       matchPackageNames: [
