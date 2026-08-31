@@ -56,6 +56,38 @@ jobs:
               "$build_file"
           done
 
+  k3s-plan-consistency:
+    name: K3s Plan Consistency
+    runs-on: homelab-runners
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Check k3s upgrade Plans
+        run: |
+          set -euo pipefail
+          plans="infrastructure/k3s-upgrade-plans/plans.yaml"
+          status=0
+
+          # system-upgrade-controller derives the upgrade image tag from spec.version.
+          # A tag or digest here overrides that and silently pins the k3s binary that
+          # gets installed, so the Job can "succeed" while installing the old version.
+          if grep -nE '^[[:space:]]*image:[[:space:]]*rancher/k3s-upgrade[:@]' "$plans"; then
+            echo "::error file=$plans::rancher/k3s-upgrade must stay untagged so system-upgrade-controller derives the tag from spec.version"
+            status=1
+          fi
+
+          # All Plans must target the same k3s release, in the canonical +k3sN form.
+          versions="$(grep -E '^[[:space:]]*version:[[:space:]]*v' "$plans" | awk '{print $2}' | sort -u)"
+          if [ "$(echo "$versions" | wc -l)" -ne 1 ]; then
+            echo "::error file=$plans::Plans disagree on spec.version: $(echo "$versions" | tr '\n' ' ')"
+            status=1
+          fi
+          if ! echo "$versions" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+\+k3s[0-9]+$'; then
+            echo "::error file=$plans::spec.version must look like vX.Y.Z+k3sN, got: $versions"
+            status=1
+          fi
+
+          exit $status
+
   kube-linter:
     name: Kube Linter
     runs-on: homelab-runners
