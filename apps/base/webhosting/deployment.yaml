@@ -29,6 +29,11 @@ spec:
             - mountPath: /usr/share/nginx/html
               name: site
               readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            # No runAsUser: the stock nginx image needs root to bind :80 and to
+            # write its pid/temp dirs. Switching to nginxinc/nginx-unprivileged
+            # (listens on 8080) would let this run as non-root — separate change.
       volumes:
         # The page template and the class roster live in separate objects — the
         # roster is SOPS-encrypted because this repo is public — but nginx needs

@@ -130,15 +130,17 @@ data:
         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     }
 
+    // Single source of truth for the payment message. Accents are stripped
+    // because that is what goes into the QR code, and the card must show
+    // exactly what will be paid — a parent who types the message by hand
+    // should produce the same reference as the scanned code.
     function paymentMessage(student) {
-        return `${cls} ${student.lastName} ${student.firstName}`;
+        return `${cls} ${removeAccents(student.lastName)} ${removeAccents(student.firstName)}`;
     }
 
     function qrUrl(student) {
         const [accountNumber, bankCode] = bankAccount.split('/');
-        const lastName = removeAccents(student.lastName);
-        const firstName = removeAccents(student.firstName);
-        const message = encodeURIComponent(`${cls} ${lastName} ${firstName}`);
+        const message = encodeURIComponent(paymentMessage(student));
         return `https://api.paylibo.com/paylibo/generator/czech/image?accountNumber=${accountNumber}&bankCode=${bankCode}&amount=${amount}.00&currency=CZK&vs=${student.vs}&message=${message}`;
     }
 
