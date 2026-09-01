@@ -25,7 +25,10 @@ spec:
     githubConfigUrl: "https://github.com/milanoid-labs"
     githubConfigSecret: github-app
     minRunners: 1
-    maxRunners: 10
+    # Each runner pod can now burst to 4Gi (see the runner container below) and the
+    # nodes are 7.3Gi / 11.4Gi allocatable, so keep the fan-out low enough that a
+    # burst of concurrent agent jobs cannot push a node into memory pressure.
+    maxRunners: 4
     template:
       spec:
         initContainers:
@@ -42,15 +45,20 @@ spec:
             env:
               - name: DOCKER_HOST
                 value: unix:///var/run/docker.sock
-            # Sized from 7d of real CI runs (66 ephemeral pods): peak 469Mi / 133m.
-            # Limits keep ~2x memory and ~11x CPU headroom for heavier future jobs.
+            # The plain CI jobs (yamllint, kubeconform, kube-linter) peak at 469Mi / 133m
+            # over 7d of real runs, but the Copilot PR reviewer runs its whole agent in
+            # this container -- Node 24, Playwright MCP, Autofind, git-proxy -- and was
+            # cgroup-OOM-killed at the old 1Gi limit, which kills Runner.Listener and
+            # surfaces on GitHub as "the self-hosted runner lost communication with the
+            # server". 4Gi covers the agent; the request stays small so ordinary CI pods
+            # still pack well.
             resources:
               requests:
                 cpu: "100m"
-                memory: "256Mi"
+                memory: "512Mi"
               limits:
                 cpu: "1500m"
-                memory: "1Gi"
+                memory: "4Gi"
             volumeMounts:
               - name: work
                 mountPath: /home/runner/_work
