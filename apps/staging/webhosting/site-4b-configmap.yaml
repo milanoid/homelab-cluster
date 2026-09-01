@@ -142,9 +142,14 @@ data:
         return `https://api.paylibo.com/paylibo/generator/czech/image?accountNumber=${accountNumber}&bankCode=${bankCode}&amount=${amount}.00&currency=CZK&vs=${student.vs}&message=${message}`;
     }
 
-    function createQRCode(student, containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `<img src="${qrUrl(student)}" width="200" height="200" alt="QR code" crossorigin="anonymous">`;
+    function qrImage(student) {
+        const img = document.createElement('img');
+        img.src = qrUrl(student);
+        img.width = 200;
+        img.height = 200;
+        img.alt = `QR kód - ${paymentMessage(student)}`;
+        img.crossOrigin = "anonymous";
+        return img;
     }
 
     function downloadQRCode(student) {
@@ -172,28 +177,49 @@ data:
         });
     }
 
+    // Build a "<strong>Label:</strong> value" row without interpolating the
+    // value into HTML — a name containing an apostrophe (O'Brien) or a bracket
+    // must not be able to break out of the markup.
+    function infoRow(label, value) {
+        const row = document.createElement('div');
+        const strong = document.createElement('strong');
+        strong.textContent = `${label}:`;
+        row.appendChild(strong);
+        row.appendChild(document.createTextNode(` ${value}`));
+        return row;
+    }
+
     // Generate all QR codes
     const grid = document.getElementById('qrGrid');
     students.forEach(student => {
         const card = document.createElement('div');
         card.className = 'card';
 
-        card.innerHTML = `
-            <div class="student-name">${student.firstName} ${student.lastName}</div>
-            <div class="payment-info">
-                <div><strong>Účet:</strong> ${bankAccount}</div>
-                <div><strong>Částka:</strong> ${amount} Kč</div>
-                <div><strong>VS:</strong> ${student.vs}</div>
-                <div><strong>Zpráva:</strong> ${paymentMessage(student)}</div>
-            </div>
-            <div class="qr-container" id="qr-${student.vs}"></div>
-            <button class="download-btn" onclick='downloadQRCode(${JSON.stringify(student)})'>
-                Stáhnout QR kód
-            </button>
-        `;
+        const name = document.createElement('div');
+        name.className = 'student-name';
+        name.textContent = `${student.firstName} ${student.lastName}`;
+        card.appendChild(name);
+
+        const info = document.createElement('div');
+        info.className = 'payment-info';
+        info.appendChild(infoRow('Účet', bankAccount));
+        info.appendChild(infoRow('Částka', `${amount} Kč`));
+        info.appendChild(infoRow('VS', student.vs));
+        info.appendChild(infoRow('Zpráva', paymentMessage(student)));
+        card.appendChild(info);
+
+        const qr = document.createElement('div');
+        qr.className = 'qr-container';
+        qr.appendChild(qrImage(student));
+        card.appendChild(qr);
+
+        const btn = document.createElement('button');
+        btn.className = 'download-btn';
+        btn.textContent = 'Stáhnout QR kód';
+        btn.addEventListener('click', () => downloadQRCode(student));
+        card.appendChild(btn);
 
         grid.appendChild(card);
-        createQRCode(student, `qr-${student.vs}`);
     });
     </script>
     </body>

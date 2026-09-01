@@ -4,5 +4,4 @@ kind: Kustomization
 resources:
   - deployment.yaml
   - namespace.yaml
-  - site-4b-configmap.yaml
   - service.yaml
