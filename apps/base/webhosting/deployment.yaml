@@ -27,8 +27,22 @@ spec:
               memory: "128Mi"
           volumeMounts:
             - mountPath: /usr/share/nginx/html
-              name: webhosting-data
+              name: site
+              readOnly: true
+          securityContext:
+            allowPrivilegeEscalation: false
+            # No runAsUser: the stock nginx image needs root to bind :80 and to
+            # write its pid/temp dirs. Switching to nginxinc/nginx-unprivileged
+            # (listens on 8080) would let this run as non-root — separate change.
       volumes:
-        - name: webhosting-data
-          persistentVolumeClaim:
-            claimName: webhosting-data-pvc
+        # The page template and the class roster live in separate objects — the
+        # roster is SOPS-encrypted because this repo is public — but nginx needs
+        # them in one docroot. A projected volume merges them; subPath mounts
+        # would not pick up later updates.
+        - name: site
+          projected:
+            sources:
+              - configMap:
+                  name: webhosting-4b
+              - secret:
+                  name: webhosting-4b-roster

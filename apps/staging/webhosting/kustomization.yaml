@@ -6,3 +6,5 @@ resources:
   - ../../base/webhosting
   - cloudflare.yaml
   - webhosting-tunnel-credentials.yaml
+  - site-4b-configmap.yaml
+  - webhosting-4b-roster-secret.yaml
