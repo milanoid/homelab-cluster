@@ -1,0 +1,200 @@
+---
+# Page template for the 4.B class fund (KPŠ) QR payment page.
+#
+# Deliberately contains NO personal data: this repository is public. The class
+# roster (names + variable symbols), along with startYear/letter, lives in the
+# SOPS-encrypted Secret webhosting-4b-roster and is served alongside this file
+# as students.js via a projected volume.
+#
+# The class name is computed from the current date (see students.js), so the
+# page rolls over to the next grade on 1 September by itself.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webhosting-4b
+  namespace: webhosting
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="cs">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>QR kódy pro platby</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+            .grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+                margin-top: 30px;
+            }
+            .card {
+                background: white;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                text-align: center;
+            }
+            .student-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #2c3e50;
+                margin-bottom: 10px;
+            }
+            .payment-info {
+                font-size: 14px;
+                color: #666;
+                margin-bottom: 15px;
+                text-align: left;
+            }
+            .payment-info div {
+                margin: 5px 0;
+            }
+            .qr-container {
+                margin: 15px auto;
+                display: inline-block;
+            }
+            .qr-container img {
+                max-width: 100%;
+                height: auto;
+            }
+            .download-btn {
+                background-color: #3498db;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                margin-top: 10px;
+            }
+            .download-btn:hover {
+                background-color: #2980b9;
+            }
+            .download-all {
+                text-align: center;
+                margin: 20px 0;
+            }
+            .download-all button {
+                background-color: #27ae60;
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .download-all button:hover {
+                background-color: #229954;
+            }
+        </style>
+    </head>
+    <body>
+    <h1></h1>
+    <div class="download-all">
+        <button onclick="downloadAllQRCodes()">Stáhnout všechny QR kódy</button>
+    </div>
+    <div class="grid" id="qrGrid"></div>
+
+    <!-- Roster + startYear/letter, from the SOPS-encrypted webhosting-4b-roster Secret -->
+    <script src="students.js"></script>
+    <script>
+    // Current class, derived from today's date. The school year rolls over on
+    // 1 September (month index 8), so this page needs no yearly edit.
+    function currentClass() {
+        const now = new Date();
+        const schoolYear = now.getFullYear() - (now.getMonth() < 8 ? 1 : 0);
+        return `${schoolYear - startYear + 1}.${letter}`;
+    }
+
+    const cls = currentClass();
+    document.title = `QR kódy pro platby - ${cls}`;
+    document.querySelector('h1').textContent = `QR kódy pro platby KPŠ - ${cls}`;
+
+    const bankAccount = "6880321001/5500";
+    const amount = "600";
+
+    function removeAccents(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function paymentMessage(student) {
+        return `${cls} ${student.lastName} ${student.firstName}`;
+    }
+
+    function qrUrl(student) {
+        const [accountNumber, bankCode] = bankAccount.split('/');
+        const lastName = removeAccents(student.lastName);
+        const firstName = removeAccents(student.firstName);
+        const message = encodeURIComponent(`${cls} ${lastName} ${firstName}`);
+        return `https://api.paylibo.com/paylibo/generator/czech/image?accountNumber=${accountNumber}&bankCode=${bankCode}&amount=${amount}.00&currency=CZK&vs=${student.vs}&message=${message}`;
+    }
+
+    function createQRCode(student, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = `<img src="${qrUrl(student)}" width="200" height="200" alt="QR code" crossorigin="anonymous">`;
+    }
+
+    function downloadQRCode(student) {
+        // Download the image
+        fetch(qrUrl(student))
+            .then(response => response.blob())
+            .then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.download = `QR_${student.lastName}_${student.firstName}_${student.vs}.png`;
+                link.href = blobUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobUrl);
+            })
+            .catch(err => console.error('Chyba při stahování:', err));
+    }
+
+    function downloadAllQRCodes() {
+        students.forEach((student, index) => {
+            setTimeout(() => {
+                downloadQRCode(student);
+            }, index * 300);
+        });
+    }
+
+    // Generate all QR codes
+    const grid = document.getElementById('qrGrid');
+    students.forEach(student => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+            <div class="student-name">${student.firstName} ${student.lastName}</div>
+            <div class="payment-info">
+                <div><strong>Účet:</strong> ${bankAccount}</div>
+                <div><strong>Částka:</strong> ${amount} Kč</div>
+                <div><strong>VS:</strong> ${student.vs}</div>
+                <div><strong>Zpráva:</strong> ${paymentMessage(student)}</div>
+            </div>
+            <div class="qr-container" id="qr-${student.vs}"></div>
+            <button class="download-btn" onclick='downloadQRCode(${JSON.stringify(student)})'>
+                Stáhnout QR kód
+            </button>
+        `;
+
+        grid.appendChild(card);
+        createQRCode(student, `qr-${student.vs}`);
+    });
+    </script>
+    </body>
+    </html>

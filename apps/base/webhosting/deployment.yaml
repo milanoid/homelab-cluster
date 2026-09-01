@@ -27,8 +27,17 @@ spec:
               memory: "128Mi"
           volumeMounts:
             - mountPath: /usr/share/nginx/html
-              name: webhosting-data
+              name: site
+              readOnly: true
       volumes:
-        - name: webhosting-data
-          persistentVolumeClaim:
-            claimName: webhosting-data-pvc
+        # The page template and the class roster live in separate objects — the
+        # roster is SOPS-encrypted because this repo is public — but nginx needs
+        # them in one docroot. A projected volume merges them; subPath mounts
+        # would not pick up later updates.
+        - name: site
+          projected:
+            sources:
+              - configMap:
+                  name: webhosting-4b
+              - secret:
+                  name: webhosting-4b-roster
