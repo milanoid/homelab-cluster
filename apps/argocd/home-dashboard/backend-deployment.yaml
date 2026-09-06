@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-dashboard-backend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: home-dashboard-backend
+  template:
+    metadata:
+      labels:
+        app: home-dashboard-backend
+    spec:
+      containers:
+        - image: ghcr.io/milanoid-labs/home-dashboard-api:backend-v0.2.0
+          name: home-dashboard-backend
+          ports:
+            - containerPort: 8001
+          env:
+            - name: SHC_URL
+              value: "http://192.168.1.56"
+            - name: SHC_USERNAME
+              value: "admin"
+            - name: SHC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: home-dashboard-shc-credentials
+                  key: password
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi

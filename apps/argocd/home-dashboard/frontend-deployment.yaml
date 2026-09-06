@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-dashboard-frontend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: home-dashboard-frontend
+  template:
+    metadata:
+      labels:
+        app: home-dashboard-frontend
+    spec:
+      containers:
+        - image: ghcr.io/milanoid-labs/home-dashboard-web:frontend-v0.2.0
+          name: home-dashboard-frontend
+          ports:
+            - containerPort: 8080
+          env:
+            - name: API_URL
+              value: "http://home-dashboard-backend"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
