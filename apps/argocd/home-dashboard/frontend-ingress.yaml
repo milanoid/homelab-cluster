@@ -1,0 +1,22 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: home-dashboard
+spec:
+  ingressClassName: traefik
+  rules:
+    # LAN/VPN only - needs a Cloudflare DNS record pointing this hostname
+    # at the cluster's local IP (see milanoid-net-terraform), same as
+    # linkding.milanoid.net etc. Until that record exists, reach the
+    # frontend Service directly (ClusterIP + port-forward, or a NodePort).
+    - host: home-dashboard.milanoid.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: home-dashboard-frontend
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
