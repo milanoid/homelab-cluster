@@ -29,16 +29,24 @@ spec:
                 secretKeyRef:
                   name: home-dashboard-shc-credentials
                   key: password
+          # These nodes are slow (AMD A8-8600B): the API took 43s to finish booting,
+          # while liveness (initialDelaySeconds 10, 3 x 10s) killed it at ~40s — a race
+          # the pod usually lost. startupProbe gives it 150s before liveness counts at all.
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            periodSeconds: 5
+            failureThreshold: 30
           readinessProbe:
             httpGet:
               path: /health
               port: 8001
-            initialDelaySeconds: 3
           livenessProbe:
             httpGet:
               path: /health
               port: 8001
-            initialDelaySeconds: 10
+            timeoutSeconds: 3
           resources:
             requests:
               cpu: 50m
