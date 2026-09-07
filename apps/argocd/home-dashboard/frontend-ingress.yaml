@@ -6,10 +6,9 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-    # LAN/VPN only - needs a Cloudflare DNS record pointing this hostname
-    # at the cluster's local IP (see milanoid-net-terraform), same as
-    # linkding.milanoid.net etc. Until that record exists, reach the
-    # frontend Service directly (ClusterIP + port-forward, or a NodePort).
+    # LAN/VPN only: the DNS record is an unproxied A record to a node IP, so
+    # this hostname does not resolve usefully from the public internet.
+    # Managed in milanoid-net-terraform (dns.tf, the `traefik` records map).
     - host: home-dashboard.milanoid.net
       http:
         paths:
