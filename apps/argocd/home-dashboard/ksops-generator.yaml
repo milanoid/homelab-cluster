@@ -1,0 +1,11 @@
+---
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: home-dashboard-secret-generator
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ksops
+files:
+  - home-dashboard-secrets.sops.yaml
