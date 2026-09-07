@@ -22,16 +22,27 @@ spec:
           env:
             - name: API_URL
               value: "http://home-dashboard-backend"
+          # /health here reports on the *backend* too — it returns 503 whenever the API
+          # is unreachable. So it can only drive readiness; using it for startup or
+          # liveness restarts a perfectly healthy frontend whenever the backend is down,
+          # which is how this pod racked up 247 restarts.
           readinessProbe:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 3
-          livenessProbe:
-            httpGet:
-              path: /health
+            periodSeconds: 10
+          # Process-liveness only: is Flask still accepting connections? Combined with the
+          # startup budget below, this survives a long backend outage without restarting.
+          startupProbe:
+            tcpSocket:
               port: 8080
-            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               cpu: 50m
